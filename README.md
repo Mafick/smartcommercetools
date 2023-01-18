@@ -1,0 +1,2 @@
+# smartcommercetools
+sct
