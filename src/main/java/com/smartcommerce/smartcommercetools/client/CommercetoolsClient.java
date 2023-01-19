@@ -25,21 +25,14 @@ public class CommercetoolsClient {
 
 
 	public ProjectApiRoot createApiClient() {
-		final ProjectApiRoot apiRoot
-		try {
-			final ProjectApiRoot apiRoot = ApiRootBuilder.of()
+		final ProjectApiRoot apiRoot = ApiRootBuilder.of()
 				.defaultClient(ClientCredentials.of()
 								.withClientId(clientId)
 								.withClientSecret(clientSecret)
 								.build(),
 						ServiceRegion.GCP_EUROPE_WEST1)
 				.build(projectKey);
-
-		} finally {
-			ap
-		}
-
-			return apiRoot;
+		return apiRoot;
 	}
 
 }
