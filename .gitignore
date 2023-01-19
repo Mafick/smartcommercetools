@@ -15,8 +15,8 @@
 
 ### Maven ###
 HELP.md
-target/
 !.mvn/wrapper/maven-wrapper.jar
+target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 
