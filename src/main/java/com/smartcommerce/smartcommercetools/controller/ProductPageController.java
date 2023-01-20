@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import java.util.List;
 
 import com.smartcommerce.smartcommercetools.constant.CtrlConst;
+import com.smartcommerce.smartcommercetools.converter.ProductConverter;
 import com.smartcommerce.smartcommercetools.data.ProductData;
 import com.smartcommerce.smartcommercetools.service.ProductService;
 
@@ -18,9 +19,11 @@ import com.smartcommerce.smartcommercetools.service.ProductService;
 public class ProductPageController extends AbstractPageController {
 
 	private final ProductService productService;
+	private final ProductConverter productConverter;
 
-	public ProductPageController(ProductService productService) {
+	public ProductPageController(ProductService productService, ProductConverter productConverter) {
 		this.productService = productService;
+		this.productConverter = productConverter;
 	}
 
 	@RequestMapping(value = CtrlConst.PRODUCT_URL, method = RequestMethod.GET)
@@ -50,6 +53,26 @@ public class ProductPageController extends AbstractPageController {
 		System.out.println("Version: " + version);
 
 		productService.deleteProduct(id, version);
+
+		return CtrlConst.REDIRECT + CtrlConst.PRODUCT_URL;
+	}
+
+	@RequestMapping(value = CtrlConst.PRODUCT_DETAILS_URL + "{id}", method = RequestMethod.GET)
+	public String productDetailsPage(@PathVariable("id") String id, Model model) {
+		Product product = productService.getProduct(id);
+		ProductData productData = productConverter.convert(product);
+		model.addAttribute("productData", productData);
+
+		return CtrlConst.PRODUCT_DETAILS_PAGE;
+	}
+
+	@RequestMapping(value = CtrlConst.PRODUCT_UPDATE_URL, method = RequestMethod.POST)
+	public String updateProduct(@ModelAttribute ProductData productData) {
+		System.out.println("--- UPDATE PRODUCT ---");
+		System.out.println("ID: " + productData.getId());
+		System.out.println("Version: " + productData.getVersion());
+
+		productService.updateProduct(productData.getId(), productData.getVersion(), productData.getName(), productData.getDescription());
 
 		return CtrlConst.REDIRECT + CtrlConst.PRODUCT_URL;
 	}

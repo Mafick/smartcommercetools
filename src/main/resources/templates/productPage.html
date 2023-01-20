@@ -59,6 +59,7 @@
 				<th>getName</th>
 				<th>getDescription</th>
 				<th>getSlug</th>
+				<th>Edit?</th>
 				<th>Delete?</th>
 			</tr>
 			</thead>
@@ -66,12 +67,15 @@
 				<tr class="text-nowrap">
 					<td th:text="${product.getId()}"></td>
 					<td th:text="${product.getKey()}"></td>
-					<td th:text="${product.getMasterData().getCurrent().getName().get('DE-DE')}"></td>
-					<td th:text="${product.getMasterData().getCurrent().getDescription().get('DE-DE')}"></td>
-					<td th:text="${product.getMasterData().getCurrent().getSlug().get('DE-DE')}"></td>
+					<td th:text="${product.getMasterData().getCurrent().getName().get('de-de')}"></td>
+					<td th:text="${product.getMasterData().getCurrent().getDescription().get('de-de')}"></td>
+					<td th:text="${product.getMasterData().getCurrent().getSlug().get('de-de')}"></td>
+					<td class="text-center">
+						<a class="btn btn-warning btn-rounded" th:href="@{{detailsLink}(detailsLink='/product/details/'+${product.getId()})}">Details</a>
+					</td>
 					<td class="text-center">
 						<form method="POST" th:action="@{{deleteLink}(deleteLink='/product/delete/'+${product.getId()}+'/'+${product.getVersion()})}">
-							<button type="submit" class="btn btn-danger btn-rounded ">Delete</button>
+							<button type="submit" class="btn btn-danger btn-rounded">Delete</button>
 						</form>
 					</td>
 				</tr>

@@ -4,6 +4,7 @@ import com.commercetools.api.client.ProjectApiRoot;
 import com.commercetools.api.models.product.Product;
 import com.commercetools.api.models.product.ProductDraft;
 import com.commercetools.api.models.product.ProductPagedQueryResponse;
+import com.commercetools.api.models.product.ProductUpdate;
 import io.vrap.rmf.base.client.ApiHttpResponse;
 import org.springframework.stereotype.Service;
 
@@ -24,10 +25,36 @@ public class CommercetoolsProductService implements ProductService {
 	}
 
 	@Override
+	public List<Product> getAllProducts() {
+		ProjectApiRoot apiRoot = commercetoolsClient.createApiClient();
+
+		ProductPagedQueryResponse allProducts = apiRoot
+				.products()
+				.get()
+				.executeBlocking()
+				.getBody();
+
+		return allProducts.getResults();
+	}
+
+	@Override
+	public Product getProduct(String id) {
+		ProjectApiRoot apiRoot = commercetoolsClient.createApiClient();
+
+		Product product = apiRoot
+				.products()
+				.withId(id)
+				.get()
+				.executeBlocking()
+				.getBody();
+
+		return product;
+	}
+
+	@Override
 	public void createProduct(String name, String description, String key) {
 		ProjectApiRoot apiRoot = commercetoolsClient.createApiClient();
 
-		// Create Product
 		ProductDraft newProductDetails = ProductDraft
 				.builder()
 				.name(stringBuilder ->
@@ -49,29 +76,44 @@ public class CommercetoolsProductService implements ProductService {
 				.key(key)
 				.build();
 
-		// Post the ProductDraft and get the new Product
-		Product product = apiRoot
+		ApiHttpResponse<Product> response = apiRoot
 				.products()
 				.post(newProductDetails)
-				.executeBlocking()
-				.getBody();
+				.executeBlocking();
 
-		// Output the Product ID
-		String productID = product.getId();
-		System.out.println(productID);
+		System.out.println(response);
 	}
 
 	@Override
-	public List<Product> getAllProducts() {
+	public void updateProduct(String id, Long version, String name, String description) {
 		ProjectApiRoot apiRoot = commercetoolsClient.createApiClient();
 
-		ProductPagedQueryResponse allProducts = apiRoot
-				.products()
-				.get()
-				.executeBlocking()
-				.getBody();
+		ProductUpdate productUpdate = ProductUpdate
+				.builder()
+				.version(version)
+				.plusActions(actionBuilderName -> actionBuilderName
+						.changeNameBuilder()
+						.name(stringBuilder -> stringBuilder
+								.addValue(LocConst.LOC_EN_US, name)
+								.addValue(LocConst.LOC_DE_DE, name)
+						)
+				)
+				.plusActions(actionBuilderDescription -> actionBuilderDescription
+						.setDescriptionBuilder()
+						.description(stringBuilder -> stringBuilder
+								.addValue(LocConst.LOC_EN_US, description)
+								.addValue(LocConst.LOC_DE_DE, description)
+						)
+				)
+				.build();
 
-		return allProducts.getResults();
+		ApiHttpResponse<Product> response = apiRoot
+				.products()
+				.withId(id)
+				.post(productUpdate)
+				.executeBlocking();
+
+		System.out.println(response);
 	}
 
 	@Override
@@ -87,4 +129,5 @@ public class CommercetoolsProductService implements ProductService {
 
 		System.out.println(response);
 	}
+
 }
