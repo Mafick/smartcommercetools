@@ -27,19 +27,15 @@ public class ProductRestController {
 	}
 
 	@ResponseBody
-	@RequestMapping(value = CtrlConst.PRODUCT_URL, method = RequestMethod.GET,
-			consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_ATOM_XML_VALUE})
+	@RequestMapping(value = CtrlConst.V1 + CtrlConst.PRODUCT_URL, method = RequestMethod.GET, consumes = {MediaType.APPLICATION_JSON_VALUE})
 	public List<ProductData> productPage() {
-
 		List<Product> allProducts = productService.getAllProducts();
-		List<ProductData> allProductDatas = new ArrayList<>();
+		List<ProductData> allProductData = new ArrayList<>();
 		for (Product product : allProducts) {
-
 			ProductData productData = productConverter.convert(product);
-			allProductDatas.add(productData);
+			allProductData.add(productData);
 		}
 
-
-		return allProductDatas;
+		return allProductData;
 	}
 }
