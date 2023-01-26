@@ -1,4 +1,4 @@
-package com.smartcommerce.smartcommercetools.controller;
+package com.smartcommerce.smartcommercetools.controller.page;
 
 import com.commercetools.api.models.product_type.ProductType;
 import org.springframework.stereotype.Controller;

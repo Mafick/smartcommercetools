@@ -1,4 +1,4 @@
-package com.smartcommerce.smartcommercetools.controller;
+package com.smartcommerce.smartcommercetools.controller.page;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.ModelAttribute;

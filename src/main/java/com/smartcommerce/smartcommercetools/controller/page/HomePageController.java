@@ -1,4 +1,4 @@
-package com.smartcommerce.smartcommercetools.controller;
+package com.smartcommerce.smartcommercetools.controller.page;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
